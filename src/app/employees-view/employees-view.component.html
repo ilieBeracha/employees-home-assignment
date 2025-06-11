@@ -1,0 +1,71 @@
+<div class="page">
+  <h1>Employees</h1>
+
+  <!---- Filter & search controls -->
+  <div class="controls">
+    <select class="select" >
+      <option value="">All Departments</option>
+      <option
+        *ngFor="let department of employeesStore.departments()"
+        [value]="department.department"
+      >
+        {{ department.department }}
+      </option>
+    </select>
+
+    <input
+      class="input"
+      type="text"
+      placeholder="Search first / last name"
+      
+    />
+
+    <input
+      class="input"
+      type="text"
+      placeholder="Search city"
+      
+    />
+  </div>
+
+  <!---- Data table -->
+  <div class="table-wrapper" *ngIf="employeesStore.isLoading(); else loaded">
+    <p class="loading">Loading employees…</p>
+  </div>
+
+  <ng-template #loaded>
+    <div class="table-wrapper" *ngIf="employeesStore.employees().length; else empty">
+      <table>
+        <thead>
+          <tr>
+            <th>First&nbsp;Name</th>
+            <th>Last&nbsp;Name</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>Age</th>
+            <th>Department</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let e of employeesStore.employees()">
+            <td class="primary">{{ e.firstName }}</td>
+            <td>{{ e.lastName }}</td>
+            <td>{{ e.street }}</td>
+            <td>{{ e.city }}</td>
+            <td>{{ e.age }}</td>
+            <td>{{ e.department.toUpperCase() }}</td>
+            <td>
+              <button class="btn" (click)="updateEmployee(e)">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #empty>
+      <p class="empty-state">No employees match your filters.</p>
+    </ng-template>
+  </ng-template>
+</div>
