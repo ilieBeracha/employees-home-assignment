@@ -1,6 +1,6 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
-import { employeesStore } from '../../stores/employees-store';
+import { EmployeesStore } from '../../stores/employees-store';
 import { Employee } from '../../models/employee';
 import { EditEmployeeDialogComponent } from '../edit-employee-dialog/edit-employee-dialog.component';
 
@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-employees-view',
   imports: [CommonModule, NgFor],
-  providers: [employeesStore],
+  providers: [EmployeesStore],
   templateUrl: './employees-view.component.html',
   styleUrl: './employees-view.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -16,20 +16,20 @@ import { MatDialog } from '@angular/material/dialog';
   standalone: true
 })
 export class EmployeesViewComponent {
-  employeesStore = inject(employeesStore);
+  readonly employeesStore = inject(EmployeesStore);
   dialog = inject(MatDialog);
+  
   constructor() {
     this.employeesStore.loadEmployees();
   }
+  
   employees = this.employeesStore.employees();
   departments = this.employeesStore.departments();
+  cities = this.employeesStore.cities();
 
   openEditEmployeeDialog(employee: Employee) {
     this.dialog.open(EditEmployeeDialogComponent, {
       data: employee,
     });
-  }
-  updateEmployee(employee: Employee) {
-    this.employeesStore.updateEmployee(employee);
   }
 }

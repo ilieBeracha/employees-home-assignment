@@ -5,8 +5,8 @@ import { Observable } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class EmployeeService {
-  private baseUrl = 'https://68486299ec44b9f34940bf34.mockapi.io/api';
   private http = inject(HttpClient);
+  private baseUrl = 'https://68486299ec44b9f34940bf34.mockapi.io/api';
 
   constructor() {}
 
@@ -14,7 +14,10 @@ export class EmployeeService {
     return   this.http.get<Employee[]>(`${this.baseUrl}/employee`);
   }
 
-  static getInstance() {
-    return new EmployeeService();
+  updateEmployee(employee: Employee): Observable<Employee> {
+    const url = `${this.baseUrl}/employee/${employee.id}`;
+    return this.http.put<Employee>(url, employee);
   }
+
+  
 }
