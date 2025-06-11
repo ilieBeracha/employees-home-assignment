@@ -7,9 +7,9 @@
       <option value="">All Departments</option>
       <option
         *ngFor="let department of employeesStore.departments()"
-        [value]="department.department"
+        [value]="department"
       >
-        {{ department.department }}
+        {{ department }}
       </option>
     </select>
 
@@ -57,7 +57,7 @@
             <td>{{ e.age }}</td>
             <td>{{ e.department.toUpperCase() }}</td>
             <td>
-              <button class="btn" (click)="updateEmployee(e)">Edit</button>
+              <button class="btn" (click)="openEditEmployeeDialog(e)">Edit</button>
             </td>
           </tr>
         </tbody>

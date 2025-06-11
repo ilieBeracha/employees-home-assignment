@@ -34,10 +34,17 @@ export const employeesStore = signalStore(
                 }
             });
         },
+        updateEmployee(employee: Employee) {
+            patchState(store, { employees: store.employees().map(e => e.id === employee.id ? employee : e) });
+        },
+        deleteEmployee(employee: Employee) {
+            patchState(store, { employees: store.employees().filter(e => e.id !== employee.id) });
+        }
     })),
     
     withComputed((store) => ({
         employees: computed(() => store.employees()),
-        departments: computed(() => store.employees()),
+        departments: computed(() => store.employees().map(employee => employee.department)),
+        cities: computed(() => store.employees().map(employee => employee.city)),
     }))
 )
