@@ -30,8 +30,6 @@ export class EmployeeService {
       body: JSON.stringify(employee),
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Headers':
-          'X-Requested-With,Content-Type,Cache-Control,access_token, x-xsrf-token',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Origin': '*',
       },

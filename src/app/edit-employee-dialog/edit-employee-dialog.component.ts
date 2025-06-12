@@ -27,6 +27,7 @@ import { FormsModule, NgForm } from '@angular/forms';
   standalone: true,
 })
 export class EditEmployeeDialogComponent {
+  employeeData: Employee
   errorMessage: string | null = null;
 
   readonly employeesStore = inject(EmployeesStore);
@@ -36,9 +37,8 @@ export class EditEmployeeDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: Employee
   ) {
     this.errorMessage = null;
+    this.employeeData = {...data}
   }
-
-  @Output() PostEditeEmployeeResponse = new EventEmitter<Employee>();
 
   async saveEmployee(form: NgForm) {
     this.errorMessage = null;
@@ -52,10 +52,7 @@ export class EditEmployeeDialogComponent {
     if (!isValid) {
       return;
     }
-
-    this.employeesStore.updateEmployee(this.data);
-    this.PostEditeEmployeeResponse.emit(this.data);
-    this.closeDialog();
+    this.dialogRef.close(this.employeeData);
   }
 
   async validateAndPrepareEmployee(employee: Employee): Promise<boolean> {

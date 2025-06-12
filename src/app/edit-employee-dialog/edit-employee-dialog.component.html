@@ -13,7 +13,7 @@
             type="text"
             id="firstName"
             name="firstName"
-            [(ngModel)]="data.firstName"
+            [(ngModel)]="employeeData.firstName"
             class="form-input"
             placeholder="Enter first name"
             required
@@ -29,7 +29,7 @@
           <input
             type="text"
             id="lastName"
-            [(ngModel)]="data.lastName"
+            [(ngModel)]="employeeData.lastName"
             name="lastName"
             class="form-input"
             placeholder="Enter last name"
@@ -46,7 +46,7 @@
           <input
             type="number"
             id="age"
-            [(ngModel)]="data.age"
+            [(ngModel)]="employeeData.age"
             name="age"
             class="form-input"
             placeholder="Enter age"
@@ -64,7 +64,7 @@
           <label for="department" class="form-label">Department</label>
           <select
             id="department"
-            [(ngModel)]="data.department"
+            [(ngModel)]="employeeData.department"
             name="department"
             class="form-input"
             required
@@ -87,7 +87,7 @@
           <label for="city" class="form-label">City</label>
           <select
             id="city"
-            [(ngModel)]="data.city"
+            [(ngModel)]="employeeData.city"
             name="city"
             class="form-input"
             required
@@ -113,7 +113,7 @@
           type="text"
           id="street"
           name="street"
-          [(ngModel)]="data.street"
+          [(ngModel)]="employeeData.street"
           class="form-input"
           placeholder="Enter street address"
         />

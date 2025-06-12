@@ -36,7 +36,7 @@ export class EmployeesViewComponent {
     this.selectedDepartment = currentFilter.department || '';
     this.searchText = currentFilter.searchText || '';
   }
-
+  
   get isLoading() {
     return this.employeesStore.isLoading();
   }
@@ -112,8 +112,15 @@ export class EmployeesViewComponent {
   }
 
   openEditEmployeeDialog(employee: Employee) {
-    this.dialog.open(EditEmployeeDialogComponent, {
-      data: employee,
+    const dialogRef = this.dialog.open(EditEmployeeDialogComponent, {
+      data: employee
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.employeesStore.updateEmployee(result);
+      }
     });
   }
+
 }
