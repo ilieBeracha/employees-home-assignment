@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employee } from '../models/employee';
+import { Employee } from '../models/employee'
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
@@ -25,7 +25,15 @@ export class EmployeeService {
     const response = await fetch(url, {
       method: 'PUT',
       body: JSON.stringify(employee),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type,Cache-Control,access_token, x-xsrf-token',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
+    console.log(response)
+    console.log(response.status);
 
     console.log(await response.json());
     const updatedEmployee = (await response.json()) as Employee;
