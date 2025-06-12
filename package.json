@@ -1,7 +1,7 @@
 {
   "name": "employees-home-assignment",
   "version": "0.0.0",
-  "scripts": {  
+  "scripts": {
     "ng": "ng",
     "start:dev": "ng serve --configuration=development",
     "build": "ng build",
@@ -10,10 +10,12 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^19.2.18",
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
     "@angular/core": "^19.2.0",
     "@angular/forms": "^19.2.0",
+    "@angular/material": "^19.2.18",
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
