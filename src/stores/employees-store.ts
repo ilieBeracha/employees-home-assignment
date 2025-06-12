@@ -47,24 +47,27 @@ export const EmployeesStore = signalStore(
     return {
       async loadEmployees() {
         patchState(store, { isLoading: true, error: null });
-        
-        try {
-          const { employees, totalCount } = await employeeService.getEmployees(
-            store.currentPage(),
-            store.pageSize()
-          );
-  
-          patchState(store, {
-            employees,
-            totalItems: totalCount,
-            isLoading: false,
+
+        employeeService
+          .getEmployees(store.currentPage(), store.pageSize())
+          .subscribe({
+            next: (data) => {
+              const employees = data.employees;
+              const totalCount = data.totalCount;
+
+              patchState(store, {
+                employees,
+                totalItems: totalCount,
+                isLoading: false,
+              });
+            },
+            error: (err) => {
+              patchState(store, {
+                error: err?.message ?? 'Unknown error loading employees',
+                isLoading: false,
+              });
+            },
           });
-        } catch (err: any) {
-          patchState(store, {
-            error: err?.message ?? 'Unknown error loading employees',
-            isLoading: false,
-          });
-        }
       },
 
       updateEmployee(employee: Employee) {
@@ -114,7 +117,9 @@ export const EmployeesStore = signalStore(
       async getEmployeeById(id: number): Promise<Employee | null> {
         patchState(store, { error: null });
         try {
-          const fetchedEmployee = await employeeService.getEmployee(id.toString());
+          const fetchedEmployee = await employeeService.getEmployee(
+            id.toString()
+          );
           return fetchedEmployee;
         } catch (err: any) {
           if (err.status === 404 || err.message === 'Not Found') {
@@ -159,7 +164,9 @@ export const EmployeesStore = signalStore(
       });
     }),
 
-    totalPages: computed(() => Math.ceil(store.totalItems() / store.pageSize())),
+    totalPages: computed(() =>
+      Math.ceil(store.totalItems() / store.pageSize())
+    ),
     currentPage: computed(() => store.currentPage()),
     pageSize: computed(() => store.pageSize()),
     totalItems: computed(() => store.totalItems()),

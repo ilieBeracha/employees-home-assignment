@@ -1,21 +1,28 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Employee } from '../models/employee';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
   private baseUrl = 'https://68486299ec44b9f34940bf34.mockapi.io/api';
+  private http = inject(HttpClient);
+  constructor() {
+  }
 
-  constructor() {}
-
-  async getEmployees(
+  getEmployees(
     page: number = 1,
-    limit: number = 18
-  ): Promise<{ employees: Employee[]; totalCount: number }> {
+    limit: number = 10
+  ): Observable<{ employees: Employee[]; totalCount: number }> {
     const url = `${this.baseUrl}/employee?page=${page}&limit=${limit}`;
-    const response = await fetch(url);
-    const data = await response.json();
+    return this.http.get<{employees: Employee[] , totalCount: number }>(url).pipe(
+      map(response => {      
+        const employees = (response as any).items || (response as any); 
+        const totalCount = (response as any).count || 50;
 
-    return { employees: data.items, totalCount: data.count || 50 };
+        return { employees: employees, totalCount: totalCount };
+      })
+    );
   }
 
   async getEmployee(id: string): Promise<Employee> {
@@ -28,13 +35,7 @@ export class EmployeeService {
     const response = await fetch(url, {
       method: 'PUT',
       body: JSON.stringify(employee),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Headers':
-          'X-Requested-With,Content-Type,Cache-Control,access_token, x-xsrf-token',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Origin': '*',
-      },
+     
     });
     const updatedEmployee = (await response.json()) as Employee;
     return updatedEmployee;
