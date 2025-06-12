@@ -32,10 +32,6 @@ export class EmployeeService {
         'Access-Control-Allow-Origin': '*'
       }
     });
-    console.log(response)
-    console.log(response.status);
-
-    console.log(await response.json());
     const updatedEmployee = (await response.json()) as Employee;
     return updatedEmployee;
   }
