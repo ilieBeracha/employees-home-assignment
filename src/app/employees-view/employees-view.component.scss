@@ -49,6 +49,7 @@ h1 {
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     font-size: 0.95rem;
+    color: $text;
     background: $bg;
     transition: border-color 0.2s;
 
@@ -58,6 +59,11 @@ h1 {
       box-shadow: 0 0 0 2px rgba($primary, 0.2);
     }
   }
+}
+
+.optionPlaceeholder option{
+  color: #6b7280; /* Tailwind's gray-500 */
+  font-size: 0.95rem;
 }
 .clear-button{
     padding: 0.6rem 0.8rem;
@@ -216,4 +222,52 @@ table {
 .highlight {
   background-color: #f0df60; 
   transition: background-color 0.3s ease-in-out;
+}
+
+
+/* Pagination Styles */
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.pagination-button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: #4338ca;
+  }
+
+  &:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+}
+
+.pagination-container span { 
+  font-size: 0.9rem;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.page-size-select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  outline: none;
+  background-color: white;
+  color: #374151;
+  cursor: pointer;
 }

@@ -7,13 +7,18 @@ export class EmployeeService {
 
   constructor() {}
 
-  async getEmployees(): Promise<Employee[]> {
-    const data = await fetch(`${this.baseUrl}/employee`).then((res) =>
-      res.json()
-    );
-    const employees = data as Employee[];
-    return employees;
+  async getEmployees(page: number = 1, limit: number = 18): Promise<{ employees: Employee[], totalCount: number }> {
+    const url = `${this.baseUrl}/employee?page=${page}&limit=${limit}`;
+    const response = await fetch(url);
+    
+    const totalCount = parseInt(response.headers.get('X-Total-Count') || '0', 10);
+    const employees = await response.json() as Employee[];
+    console.log(`Fetched ${employees.length} employees from page ${page} with limit ${limit}. Total count: ${totalCount}`);
+    console.log(employees);
+    
+    return { employees, totalCount };
   }
+
   async getEmployee(id: string): Promise<Employee> {
     const data = await fetch(`${this.baseUrl}/employee/${id}`);
     const employee = (await data.json()) as Employee;

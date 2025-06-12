@@ -25,16 +25,16 @@ export class EmployeesViewComponent {
   readonly employeesStore = inject(EmployeesStore);
   dialog = inject(MatDialog);
 
-  selectedCity: string | null = null;
-  selectedDepartment: string | null = null;
-  searchText: string | null = null;
+  selectedCity: string = '';
+  selectedDepartment: string = '';
+  searchText: string = '';
 
   constructor() {
     this.employeesStore.loadEmployees();
     const currentFilter = this.employeesStore.currentFilter();
-    this.selectedCity = currentFilter.city;
-    this.selectedDepartment = currentFilter.department;
-    this.searchText = currentFilter.searchText;
+    this.selectedCity = currentFilter.city || '';
+    this.selectedDepartment = currentFilter.department || '';
+    this.searchText = currentFilter.searchText || '';
   }
 
   get isLoading() {
@@ -51,9 +51,35 @@ export class EmployeesViewComponent {
   get cities() {
     return this.employeesStore.cities();
   }
+
   get currentFilter() {
     return this.employeesStore.currentFilter();
   }
+
+  get currentPage() {
+    return this.employeesStore.currentPage();
+  }
+
+  get pageSize() {
+    return this.employeesStore.pageSize();
+  }
+
+  get totalItems() {
+    return this.employeesStore.totalItems();
+  }
+
+  get totalPages() { 
+    return this.employeesStore.totalPages();
+  }
+
+  get hasPreviousPage() {
+    return this.employeesStore.hasPreviousPage();
+  }
+
+  get hasNextPage() {
+    return this.employeesStore.hasNextPage();
+  }
+
   onCityChange(event: Event) {
     const city = (event.target as HTMLSelectElement).value || null;
     this.employeesStore.setFilter({ city });
@@ -70,10 +96,19 @@ export class EmployeesViewComponent {
   }
 
   clearAllFilters() {
-    this.selectedCity = null;
-    this.selectedDepartment = null;
-    this.searchText = null;
+    this.selectedCity = '';
+    this.selectedDepartment = '';
+    this.searchText = '';
     this.employeesStore.clearFilter();
+  }
+
+  goToPage(page: number) {
+    this.employeesStore.goToPage(page);
+  }
+
+  onPageSizeChange(event: Event) {
+    const newSize = parseInt((event.target as HTMLSelectElement).value, 10);
+    this.employeesStore.setPageSize(newSize);
   }
 
   openEditEmployeeDialog(employee: Employee) {
