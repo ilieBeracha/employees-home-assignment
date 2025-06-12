@@ -59,7 +59,14 @@ h1 {
     }
   }
 }
-
+.clear-button{
+    padding: 0.6rem 0.8rem;
+    border: 1px solid red;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: $bg;
+    transition: border-color 0.2s;
+}
 /* ---------- table ---------- */
 .table-wrapper {
   background: $bg;
@@ -204,4 +211,9 @@ table {
       min-width: 120px;
     }
   }
+}
+
+.highlight {
+  background-color: #f0df60; 
+  transition: background-color 0.3s ease-in-out;
 }

@@ -41,12 +41,9 @@ export class EmployeesViewComponent {
     return this.employeesStore.isLoading();
   }
 
-  // <--- IMPORTANT CHANGE HERE --->
-  // Now, the 'employees' getter returns the *filtered* list from the store
   get employees() {
     return this.employeesStore.filteredEmployees();
   }
-  // <--- END IMPORTANT CHANGE --->
 
   get departments() {
     return this.employeesStore.departments();
@@ -54,21 +51,20 @@ export class EmployeesViewComponent {
   get cities() {
     return this.employeesStore.cities();
   }
-
+  get currentFilter() {
+    return this.employeesStore.currentFilter();
+  }
   onCityChange(event: Event) {
-    console.log('Event target:', event.target);
     const city = (event.target as HTMLSelectElement).value || null;
     this.employeesStore.setFilter({ city });
   }
 
   onDepartmentChange(event: Event) {
-    console.log('Event target:', event.target);
     const department = (event.target as HTMLSelectElement).value || null;
     this.employeesStore.setFilter({ department });
   }
 
   onSearchTextChange(event: Event) {
-    console.log('Event target:', event.target);
     const searchText = (event.target as HTMLInputElement).value || null;
     this.employeesStore.setFilter({ searchText });
   }

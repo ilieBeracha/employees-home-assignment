@@ -1,49 +1,50 @@
 <div class="page">
   <h1>Employees</h1>
-<div class="controls flex flex-col sm:flex-row gap-4 p-4 bg-gray-100 rounded-lg shadow-md">
-  <select
-    class="select p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
-    [(ngModel)]="selectedDepartment"
-    (change)="onDepartmentChange($event)"
-  >
-    <option [value]="null">All Departments</option>
-    <option
-      *ngFor="let department of departments"
-      [value]="department"
+  <div class="controls">
+    <select
+      class="select"
+      [(ngModel)]="selectedDepartment"
+      (change)="onDepartmentChange($event)"
     >
-      {{ department }}
-    </option>
-  </select>
+      <option value="">All Departments</option>
+      <option
+        *ngFor="let department of departments"
+        [value]="department"
+      >
+        {{ department }}
+      </option>
+    </select>
 
-  <input
-    class="input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
-    type="text"
-    placeholder="Search first / last name"
-    [(ngModel)]="searchText"
-    (input)="onSearchTextChange($event)"
-  />
+    <input
+      class="input"
+      type="text"
+      placeholder="Search first / last name"
+      [(ngModel)]="searchText"
+      (input)="onSearchTextChange($event)"
+    />
 
-  <select
-    class="select p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
-    [(ngModel)]="selectedCity"
-    (change)="onCityChange($event)"
-  >
-    <option [value]="null">All Cities</option>
-    <option
-      *ngFor="let city of cities"
-      [value]="city"
+    <select
+      class="select"
+      [(ngModel)]="selectedCity"
+      (change)="onCityChange($event)"
     >
-      {{ city }}
-    </option>
-  </select>
+      <option value="">All Cities</option>
+      <option
+        *ngFor="let city of cities"
+        [value]="city"
+      >
+        {{ city }}
+      </option>
+    </select>
 
-  <button
-    class="clear-button bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors duration-200"
-    (click)="clearAllFilters()"
-  >
-    Clear All Filters
-  </button>
-</div>
+    <button
+      *ngIf="currentFilter.searchText || currentFilter.department || currentFilter.city"
+      class="clear-button"
+      (click)="clearAllFilters()"
+    >
+      Clear All Filters
+    </button>
+  </div>
 
 
   <div class="table-wrapper" *ngIf="isLoading; else loaded">
@@ -67,12 +68,29 @@
 
         <tbody>
           <tr *ngFor="let e of employees">
-            <td class="primary">{{ e.firstName }}</td>
-            <td>{{ e.lastName }}</td>
+            <td
+              class="primary"
+              [ngClass]="{ 'highlight': currentFilter.searchText && (e.firstName + ' ' + e.lastName).toLowerCase().includes(currentFilter.searchText.toLowerCase()) }"
+            >
+              {{ e.firstName }}
+            </td>
+            <td
+              [ngClass]="{ 'highlight': currentFilter.searchText && (e.firstName + ' ' + e.lastName).toLowerCase().includes(currentFilter.searchText.toLowerCase()) }"
+            >
+              {{ e.lastName }}
+            </td>
             <td>{{ e.street }}</td>
-            <td>{{ e.city }}</td>
+            <td
+              [ngClass]="{ 'highlight': currentFilter.city && e.city === currentFilter.city }"
+            >
+              {{ e.city }}
+            </td>
             <td>{{ e.age }}</td>
-            <td>{{ e.department.toUpperCase() }}</td>
+            <td
+              [ngClass]="{ 'highlight': currentFilter.department && e.department.toUpperCase() === currentFilter.department.toUpperCase() }"
+            >
+              {{ e.department.toUpperCase() }}
+            </td>
             <td>
               <button class="btn" (click)="openEditEmployeeDialog(e)">Edit</button>
             </td>
