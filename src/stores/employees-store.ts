@@ -37,7 +37,7 @@ const initialState: EmployeesState = {
   },
   currentPage: 1,
   pageSize: 10,
-  totalItems: 48,
+  totalItems: 10,
 };
 
 export const EmployeesStore = signalStore(
@@ -47,15 +47,16 @@ export const EmployeesStore = signalStore(
     return {
       async loadEmployees() {
         patchState(store, { isLoading: true, error: null });
-
+        
         try {
           const { employees, totalCount } = await employeeService.getEmployees(
             store.currentPage(),
             store.pageSize()
           );
+  
           patchState(store, {
             employees,
-            totalItems: 48,
+            totalItems: totalCount,
             isLoading: false,
           });
         } catch (err: any) {
