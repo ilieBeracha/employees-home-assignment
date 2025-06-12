@@ -1,40 +1,57 @@
 <div class="page">
   <h1>Employees</h1>
+<div class="controls flex flex-col sm:flex-row gap-4 p-4 bg-gray-100 rounded-lg shadow-md">
+  <select
+    class="select p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
+    [(ngModel)]="selectedDepartment"
+    (change)="onDepartmentChange($event)"
+  >
+    <option [value]="null">All Departments</option>
+    <option
+      *ngFor="let department of departments"
+      [value]="department"
+    >
+      {{ department }}
+    </option>
+  </select>
 
-  <!---- Filter & search controls -->
-  <div class="controls">
-    <select class="select" >
-      <option value="">All Departments</option>
-      <option
-        *ngFor="let department of employeesStore.departments()"
-        [value]="department"
-      >
-        {{ department }}
-      </option>
-    </select>
+  <input
+    class="input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
+    type="text"
+    placeholder="Search first / last name"
+    [(ngModel)]="searchText"
+    (input)="onSearchTextChange($event)"
+  />
 
-    <input
-      class="input"
-      type="text"
-      placeholder="Search first / last name"
-      
-    />
+  <select
+    class="select p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
+    [(ngModel)]="selectedCity"
+    (change)="onCityChange($event)"
+  >
+    <option [value]="null">All Cities</option>
+    <option
+      *ngFor="let city of cities"
+      [value]="city"
+    >
+      {{ city }}
+    </option>
+  </select>
 
-    <input
-      class="input"
-      type="text"
-      placeholder="Search city"
-      
-    />
-  </div>
+  <button
+    class="clear-button bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors duration-200"
+    (click)="clearAllFilters()"
+  >
+    Clear All Filters
+  </button>
+</div>
 
-  <!---- Data table -->
-  <div class="table-wrapper" *ngIf="employeesStore.isLoading(); else loaded">
+
+  <div class="table-wrapper" *ngIf="isLoading; else loaded">
     <p class="loading">Loading employees…</p>
   </div>
 
   <ng-template #loaded>
-    <div class="table-wrapper" *ngIf="employeesStore.employees().length; else empty">
+      <div class="table-wrapper" *ngIf="employees.length; else empty">
       <table>
         <thead>
           <tr>
@@ -49,7 +66,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let e of employeesStore.employees()">
+          <tr *ngFor="let e of employees">
             <td class="primary">{{ e.firstName }}</td>
             <td>{{ e.lastName }}</td>
             <td>{{ e.street }}</td>

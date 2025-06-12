@@ -1,23 +1,34 @@
-import { inject, Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Employee } from "../models/employee";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class EmployeeService {
-  private http = inject(HttpClient);
   private baseUrl = 'https://68486299ec44b9f34940bf34.mockapi.io/api';
 
   constructor() {}
 
-  getEmployees(): Observable<Employee[]> {
-    return   this.http.get<Employee[]>(`${this.baseUrl}/employee`);
+  async getEmployees(): Promise<Employee[]> {
+    const data = await fetch(`${this.baseUrl}/employee`).then((res) =>
+      res.json()
+    );
+    const employees = data as Employee[];
+    return employees;
   }
-
-  updateEmployee(employee: Employee): Observable<Employee> {
+  async getEmployee(id: string): Promise<Employee> {
+    const data = await fetch(`${this.baseUrl}/employee/${id}`);
+    const employee = (await data.json()) as Employee;
+    return employee;
+  }
+  async updateEmployee(employee: Employee): Promise<Employee> {
+    console.log(employee);
     const url = `${this.baseUrl}/employee/${employee.id}`;
-    return this.http.put<Employee>(url, employee);
-  }
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(employee),
+    });
 
-  
+    console.log(await response.json());
+    const updatedEmployee = (await response.json()) as Employee;
+    return updatedEmployee;
+  }
 }
