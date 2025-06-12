@@ -5,7 +5,7 @@
       <button (click)="closeDialog()" type="button" class="close-btn">×</button>
     </div>
 
-    <form class="modal-form">
+    <form class="modal-form" #employeeForm="ngForm" (ngSubmit)="saveEmployee(employeeForm)">
       <div class="form-grid">
         <div class="form-group">
           <label for="firstName" class="form-label">First Name</label>
@@ -16,7 +16,12 @@
             [(ngModel)]="data.firstName"
             class="form-input"
             placeholder="Enter first name"
+            required
+            #firstNameInput="ngModel"
           />
+          <div *ngIf="firstNameInput.invalid && (firstNameInput.dirty || firstNameInput.touched)" class="error-message">
+            <div *ngIf="firstNameInput.errors?.['required']">First Name is required.</div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -28,7 +33,12 @@
             name="lastName"
             class="form-input"
             placeholder="Enter last name"
+            required
+            #lastNameInput="ngModel"
           />
+          <div *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="error-message">
+            <div *ngIf="lastNameInput.errors?.['required']">Last Name is required.</div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -40,7 +50,14 @@
             name="age"
             class="form-input"
             placeholder="Enter age"
+            required
+            min="18"
+            #ageInput="ngModel"
           />
+          <div *ngIf="ageInput.invalid && (ageInput.dirty || ageInput.touched)" class="error-message">
+            <div *ngIf="ageInput.errors?.['required']">Age is required.</div>
+            <div *ngIf="ageInput.errors?.['min']">Age must be at least 18.</div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -50,6 +67,8 @@
             [(ngModel)]="data.department"
             name="department"
             class="form-input"
+            required
+            #departmentInput="ngModel"
           >
             <option value="">Select department</option>
             <option
@@ -59,6 +78,9 @@
               {{ dept }}
             </option>
           </select>
+          <div *ngIf="departmentInput.invalid && (departmentInput.dirty || departmentInput.touched)" class="error-message">
+            <div *ngIf="departmentInput.errors?.['required']">Department is required.</div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -68,6 +90,8 @@
             [(ngModel)]="data.city"
             name="city"
             class="form-input"
+            required
+            #cityInput="ngModel"
           >
             <option value="">Select city</option>
             <option
@@ -77,6 +101,9 @@
                 {{ city }}
               </option>
           </select>
+          <div *ngIf="cityInput.invalid && (cityInput.dirty || cityInput.touched)" class="error-message">
+            <div *ngIf="cityInput.errors?.['required']">City is required.</div>
+          </div>
         </div>
       </div>
 
@@ -92,11 +119,15 @@
         />
       </div>
 
+      <div *ngIf="errorMessage" class="error-message-box">
+        {{ errorMessage }}
+      </div>
+
       <div class="modal-actions">
-        <button (click)="dialogRef.close()" type="button" class="btn btn-secondary">
+        <button (click)="closeDialog()" type="button" class="btn btn-secondary">
           Cancel
         </button>
-        <button (click)="saveEmployee()" type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">
           Save
         </button>
       </div>
