@@ -38,7 +38,6 @@ export class EmployeesViewComponent {
   }
   
   get isLoading() {
-console.log(1)
     return this.employeesStore.isLoading();
   }
 
